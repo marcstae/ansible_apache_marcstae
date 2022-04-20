@@ -1,0 +1,220 @@
+---
+- hosts: localhost
+  connection: local
+  # vars: 
+  #   ansible_python_interpreter: /usr/bin/python3
+  become: true
+
+  tasks:
+    - name: Add an apt key by id from a keyserver
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Add Docker repository into sources list
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+        update_cache: no
+      when: ansible_os_family == "Debian"
+
+    - name: Add Docker repository RedHat
+      yum_repository:
+        name: Docker-repository
+        description: adding a repository
+        baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+        gpgcheck: no
+      when: ansible_os_family == "RedHat"
+
+    - name: Install a list of packages
+      ansible.builtin.apt:
+        pkg:
+        - docker-ce 
+        - docker-ce-cli 
+        - containerd.io
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install Docker packages
+      yum:
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Enable the Docker daemon in systemd
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+          
+    - name: Ensure group "docker" exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+      ansible.builtin.user:
+        name: marc
+        group: docker
+        append: yes
+
+#create apache web server docker container with ansible
+    # - name: Create a docker container
+    #   docker_container:
+    #     name: my-nginx-container
+    #     image: nginx
+    #     state: present
+    #     ports:
+    #       - "8080:80"
+    #     command: sleep infinity
+    #     # volumes:
+    #     #   - /srv/www/htdocs:/var/www/html
+    
+
+    - name: Container present
+      docker_container:
+        name: mycontainer
+        state: present
+        image: ubuntu:14.04
+        command: sleep infinity
+
+
+
+
+
+
+
+
+  #   - name: Upgrade all packages
+  #     yum: name=* state=latest
+
+  #   - name: Check if Docker is installed
+  #     command: systemctl status docker
+  #     register: docker_check
+  #     ignore_errors: true
+
+  #   - name: Download the Docker installer
+  #     get_url:
+  #       url: https://get.docker.com/
+  #       dest: /root/install_docker.sh
+  #       mode: 0700
+  #     when: docker_check.stderr.find('service could not be found') != -1
+
+  #   - name: Install Docker
+  #     shell: /root/install_docker.sh
+  #     when: docker_check.stderr.find('service could not be found') != -1
+
+  #   - name: Enable the Docker daemon in systemd
+  #     systemd:
+  #       name: docker
+  #       enabled: yes
+  #       masked: no
+
+  #   - name: Start the Docker daemon
+  #     systemd:
+  #       name: docker
+  #       state: started
+  #       masked: no
+
+  #   # - name: Check if Docker Compose is installed
+  #   #   command: docker-compose --version
+  #   #   register: docker_compose_check
+  #   #   ignore_errors: true
+
+  #   # - name: Download and install Docker Compose
+  #   #   get_url:
+  #   #     url: https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64
+  #   #     dest: /usr/bin/docker-compose
+  #   #     mode: 0755
+  #   #   when:
+  #   #     - docker_compose_check.msg is defined
+  #   #     - docker_compose_check.msg.find('No such file or directory') != -1
+
+  #  # - name: Install Docker
+  #    # yum: name=docker state=latest
+
+
+    # - name: Create a Docker container
+    #   docker_container:
+    #     name: apache
+    #     image: httpd
+    #     ports:
+    #       - 80:80
+    #     volumes:
+    #       - /var/www/html:/var/www/html
+    #     command: sleep 3600
+
+    # - name: Start the Docker container
+    #   docker_container:
+    #     name: apache
+    #     state: started
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+#     - name: Install the latest version of Apache
+#       yum:
+#         name: httpd
+#         state: latest
+
+#     - name: Allow connections to the Web server
+#       ansible.builtin.iptables:
+#         chain: INPUT
+#         protocol: tcp
+#         destination_ports:
+#           - "80"
+#           - "443"
+#         jump: ACCEPT
+
+#     - name: Start service httpd, if not started
+#       ansible.builtin.service:
+#         name: httpd
+#         state: started
+
+#     - name: Create directory
+#       file:
+#         path: /var/www/ansible
+#         state: directory
+
+#     - name: copy html site
+#       copy:
+#         src: /home/marcstae/index.html
+#         dest: /var/www/ansible/index.html
+
+#     - name: copy conf file
+#       copy:
+#         src: /home/marcstae/ansible.conf
+#         dest: /etc/httpd/conf.d/ansible.conf
+
+# #    - name: restart httpd
+# #      ansible.builtin.service:
+# #        name: httpd
+# #        state: restarted
+
+#     - name: Enable httpd
+#       service:
+#         name: httpd
+#         enabled: yes
+
+#     - name: start httpd
+#       service:
+#         name: httpd
+#         state: started
