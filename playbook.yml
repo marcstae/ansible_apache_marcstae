@@ -1,8 +1,8 @@
 ---
-- hosts: localhost
-  connection: local
-  # vars: 
-  #   ansible_python_interpreter: /usr/bin/python3
+- hosts: kek.marc.local
+  #connection: local
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
   become: true
 
   tasks:
@@ -64,24 +64,24 @@
         append: yes
 
 #create apache web server docker container with ansible
-    # - name: Create a docker container
-    #   docker_container:
-    #     name: my-nginx-container
-    #     image: nginx
-    #     state: present
-    #     ports:
-    #       - "8080:80"
-    #     command: sleep infinity
-    #     # volumes:
-    #     #   - /srv/www/htdocs:/var/www/html
+    - name: Create a docker container
+      docker_container:
+        name: my-nginx-container
+        image: nginx
+        state: present
+        ports:
+          - "8080:80"
+        command: sleep infinity
+        volumes:
+          - /srv/www/htdocs:/var/www/html
     
 
-    - name: Container present
-      docker_container:
-        name: mycontainer
-        state: present
-        image: ubuntu:14.04
-        command: sleep infinity
+    # - name: Container present
+    #   docker_container:
+    #     name: mycontainer
+    #     state: present
+    #     image: ubuntu:14.04
+    #     command: sleep infinity
 
 
 
