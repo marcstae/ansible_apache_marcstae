@@ -62,26 +62,12 @@
         name: marc
         group: docker
         append: yes
-
-#create apache web server docker container with ansible
-    - name: Create a docker container
-      docker_container:
-        name: my-nginx-container
-        image: nginx
-        state: present
-        ports:
-          - "8080:80"
-        command: sleep infinity
-        volumes:
-          - /srv/www/htdocs:/var/www/html
     
-
-    # - name: Container present
-    #   docker_container:
-    #     name: mycontainer
-    #     state: present
-    #     image: ubuntu:14.04
-    #     command: sleep infinity
+#use ansible bash module to add a user
+    - name: Create a nginx instance
+      ansible.bash:
+        name: docker run -it --rm -d -p 8080:80 --name web nginx
+        become: yes
 
 
 
@@ -95,6 +81,27 @@
 
 
 # ----------deprecated coommands --------------
+
+
+# #create apache web server docker container with ansible
+#     - name: Create a docker container
+#       docker_container:
+#         name: my-nginx-container
+#         image: nginx
+#         state: present
+#         ports:
+#           - "8080:80"
+#         command: sleep infinity
+#         detach: true
+#         volumes:
+#           - /srv/www/htdocs:/usr/share/nginx/html
+
+    # - name: Container present
+    #   docker_container:
+    #     name: mycontainer
+    #     state: present
+    #     image: ubuntu:14.04
+    #     command: sleep infinity
 
   #   - name: Upgrade all packages
   #     yum: name=* state=latest
