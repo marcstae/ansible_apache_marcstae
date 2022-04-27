@@ -57,17 +57,17 @@
         name: docker
         state: present
 
-    - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+    - name: Add the user 'marc' to the group "docker"
       ansible.builtin.user:
         name: marc
         group: docker
         append: yes
     
 #use ansible bash module to create a nginx container
-    - name: Create a nginx instance
-      ansible.bash:
-        name: docker run -it --rm -d -p 8080:80 --name web nginx
-        become: yes
+    - name: Create a nginx container
+      ansible.builtin.shell: docker run -it --rm -d -p 8080:80 --name web nginx
+      args:
+        executable: /bin/bash
 
 
 
