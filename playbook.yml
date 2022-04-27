@@ -63,7 +63,7 @@
         group: docker
         append: yes
     
-#use ansible bash module to add a user
+#use ansible bash module to create a nginx container
     - name: Create a nginx instance
       ansible.bash:
         name: docker run -it --rm -d -p 8080:80 --name web nginx
