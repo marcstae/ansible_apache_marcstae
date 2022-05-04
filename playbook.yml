@@ -63,17 +63,22 @@
         name: marc
         group: docker
         append: yes
-    
+     
+    - name: create file directory
+      ansible.builtin.file:
+        path: /home/marcstae/files
+        state: directory
+        mode: '0755'
+
+    - name: Copy a file
+      template:
+        src: /home/marcstae/ansible/ansible_automated_nginx-server/files/index.html.j2
+        dest: /home/marcstae/files/index.html
+
     - name: Create a nginx container
       ansible.builtin.shell: docker run -it --rm -d -p 8080:80 -v /home/marcstae/files:/usr/share/nginx/html --name web nginx
       args:
         executable: /bin/bash
-  
-#copy a file onto a vm
-    - name: Copy a file
-      copy:
-        src: /home/marcstae/ansible/ansible_automated_nginx-server/files
-        dest: /home/marcstae
 
 
 
