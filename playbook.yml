@@ -1,9 +1,10 @@
 ---
 - hosts: kek.marc.local
-  #connection: local
   vars: 
     ansible_python_interpreter: /usr/bin/python3
   become: true
+  vars_files:
+    - "variables.yml"
 
   tasks:
     - name: Add an apt key by id from a keyserver
@@ -63,11 +64,18 @@
         group: docker
         append: yes
     
-#use ansible bash module to create a nginx container
     - name: Create a nginx container
-      ansible.builtin.shell: docker run -it --rm -d -p 8080:80 --name web nginx
+      ansible.builtin.shell: docker run -it --rm -d -p 8080:80 -v /home/marcstae/files:/usr/share/nginx/html --name web nginx
       args:
         executable: /bin/bash
+  
+#copy a file onto a vm
+    - name: Copy a file
+      copy:
+        src: /home/marcstae/ansible/ansible_automated_nginx-server/files
+        dest: /home/marcstae
+
+
 
 
 
