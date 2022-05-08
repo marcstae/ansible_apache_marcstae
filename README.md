@@ -8,7 +8,6 @@ This is a learning project I undertook in my time in the Linux team as a part of
 * Chooses automatically between RedHat or Ubuntu
   - RedHat: CentOS, Fedora, RHEL, etc.
 * Automatically installs all required packages
-  - nginx, docker, etc.
 * Automatically creates a HTML website with jinja2 templating
     - Allows for dynamic content
 
