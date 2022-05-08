@@ -1,8 +1,8 @@
 # Ansible automated web server
 This is a learning project I undertook in my time at the Linux team as a part of my apprenticeship @Aveniq.
-A simple Ansible playbook to deploy a nginx server either to a RedHat system or an Ubuntu system.
 
 ## Key Features
+A simple Ansible playbook to deploy a nginx server either to a RedHat system or an Ubuntu system.
 
 * Chooses automatically between RedHat or Ubuntu
   - RedHat: CentOS, Fedora, RHEL, etc.
