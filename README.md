@@ -17,6 +17,8 @@ This is a learning project I undertook in my time in the Linux team as a part of
 
 Clone this project onto your local machine that has Ansible installed.
 
+Edit the inventory file and run the playbook.
+
 ```bash
 # Run the playbook
 $ ansible-playbook playbook.yml -i inventory -k -K
