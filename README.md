@@ -7,7 +7,6 @@ A simple Ansible playbook to deploy a nginx server either to a RedHat system or 
 * Chooses automatically between RedHat or Ubuntu
   - RedHat: CentOS, Fedora, RHEL, etc.
 * Automatically installs all required packages
-  - nginx, docker, etc.
 * Automatically creates a HTML website with jinja2 templating
     - Allows for dynamic content
 
